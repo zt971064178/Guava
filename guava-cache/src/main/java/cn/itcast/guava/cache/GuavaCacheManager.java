@@ -2,8 +2,6 @@ package cn.itcast.guava.cache;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-
 import com.google.common.base.Ticker;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
