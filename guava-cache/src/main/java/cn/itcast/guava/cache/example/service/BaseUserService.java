@@ -10,7 +10,7 @@ import cn.itcast.guava.cache.example.manager.LCAreaCacheManager;
  * @version
  */
 public class BaseUserService {
-	private static final LCAreaCacheManager lcAreaCacheManager = new LCAreaCacheManager() ;
+	private static final LCAreaCacheManager lcAreaCacheManager = LCAreaCacheManager.getInstance() ;
 	
 	public BaseArea getAreaById(int areaId) {  
         return lcAreaCacheManager.get(areaId);  

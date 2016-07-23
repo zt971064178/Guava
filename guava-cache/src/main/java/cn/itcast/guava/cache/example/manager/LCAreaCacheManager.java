@@ -12,8 +12,17 @@ import cn.itcast.guava.cache.example.domain.BaseArea;
  */
 public class LCAreaCacheManager extends GuavaAbstractLoadingCache<Integer, BaseArea> implements ILocalCache<Integer, BaseArea> {
 
-	public LCAreaCacheManager() {
+	private LCAreaCacheManager() {
 		
+	}
+	
+	// 静态内部类创建单例  线程安全
+	private static class SingletonHolder {
+		private final static LCAreaCacheManager INSTANCE = new LCAreaCacheManager();
+	}
+	
+	public static final LCAreaCacheManager getInstance() {
+		return LCAreaCacheManager.SingletonHolder.INSTANCE ;
 	}
 	
 	@Override
