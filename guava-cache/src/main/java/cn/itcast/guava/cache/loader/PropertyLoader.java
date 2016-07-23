@@ -45,8 +45,13 @@ public class PropertyLoader {
 										setProperty(object, field.getName(), Boolean.parseBoolean(propertyVallue));
 									} else if(field.getType().isAssignableFrom(long.class)) {
 										setProperty(object, field.getName(), Long.parseLong(propertyVallue));
+									} else {
+										throw new RuntimeException("类型转换异常......") ;
 									}
-									else {
+								} else {
+									if(field.getType().isAssignableFrom(String.class)) {
+										setProperty(object, field.getName(), String.valueOf(propertyVallue));
+									} else {
 										throw new RuntimeException("类型转换异常......") ;
 									}
 								}
