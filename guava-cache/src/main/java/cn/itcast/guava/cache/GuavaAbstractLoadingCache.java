@@ -43,7 +43,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @author zhangtian  
      *  @return
      */
-    private LoadingCache<K, V> getCache() {
+    public LoadingCache<K, V> getCache() {
     	if(cache == null){  //使用双重校验锁保证只有一个cache实例  
             synchronized (this) {  
                 if(cache == null){

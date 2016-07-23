@@ -2,6 +2,8 @@ package cn.itcast.guava.cache.test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 
@@ -30,6 +32,15 @@ public class GuavaMapTest {
 		mapStringManager.batchPutCache(map);
 		
 		System.out.println(mapStringManager.get("b"));*/
+		
+		System.out.println("============== 缓存 =============");
+		try {
+			mapStringManager.getCache().get("name", new Callable<String>() {
+			}) ;
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
