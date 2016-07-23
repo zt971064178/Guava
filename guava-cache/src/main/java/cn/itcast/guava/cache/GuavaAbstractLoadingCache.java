@@ -43,7 +43,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @author zhangtian  
      *  @return
      */
-    public LoadingCache<K, V> getCache() {
+    private LoadingCache<K, V> getCache() {
     	if(cache == null){  //使用双重校验锁保证只有一个cache实例  
             synchronized (this) {  
                 if(cache == null){
@@ -169,7 +169,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      * @param cacheBuilder
      * @return
      */
-    public CacheBuilder<Object, Object> getCacheBuilder() {
+    private CacheBuilder<Object, Object> getCacheBuilder() {
     	CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder() ;
     	if(guavaCacheProperties.isRefreshAfterWrite()) {
     		switch (guavaCacheProperties.getRefreshTimeType().toLowerCase()) {
@@ -241,23 +241,11 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
 		return resetTime;
 	}
 
-	public void setResetTime(Date resetTime) {
-		this.resetTime = resetTime;
-	}
-
 	public long getHighestSize() {
 		return highestSize;
 	}
 
-	public void setHighestSize(long highestSize) {
-		this.highestSize = highestSize;
-	}
-
 	public Date getHighestTime() {
 		return highestTime;
-	}
-
-	public void setHighestTime(Date highestTime) {
-		this.highestTime = highestTime;
 	}
 }

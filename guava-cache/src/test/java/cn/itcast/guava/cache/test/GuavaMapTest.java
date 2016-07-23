@@ -15,16 +15,21 @@ public class GuavaMapTest {
 		mapStringManager.putCache("name", "zhangtian");
 		
 		String name = mapStringManager.get("name") ;
-		System.out.println(name);
+		System.out.println("Validate:"+name);
 		
-		Map<String, String> map = new HashMap<String, String>() ;
+		// mapStringManager.refresh("name");
+		mapStringManager.invalidate("name");
+		name = mapStringManager.get("name") ;
+		System.out.println("Invalidate:"+name);
+		
+		/*Map<String, String> map = new HashMap<String, String>() ;
 		map.put("a", "aa") ;
 		map.put("b", "bb") ;
 		map.put("c", "cc") ;
 		map.put("d", "dd") ;
 		mapStringManager.batchPutCache(map);
 		
-		System.out.println(mapStringManager.get("b"));
+		System.out.println(mapStringManager.get("b"));*/
 	}
 	
 	@Test
