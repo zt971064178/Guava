@@ -230,8 +230,20 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     		}
     	}
     	
-    	if(guavaCacheProperties.isSoftValues()) {
-    		cacheBuilder.softValues() ;
+    	if(guavaCacheProperties.isAutoInvalidate()) {
+    		switch (guavaCacheProperties.getValidateType()) {
+			case CommonConstant.INVIDATE_KEYS:
+				cacheBuilder.weakKeys() ;
+				break;
+			case CommonConstant.INVIDATE_VALUES:
+				cacheBuilder.weakValues() ;		
+				break;
+			case CommonConstant.INVIDATE_SOFT:
+				cacheBuilder.softValues() ;
+				break;
+			default:
+				break;
+			}
     	}
     	
     	if(guavaCacheProperties.isTicker()) {

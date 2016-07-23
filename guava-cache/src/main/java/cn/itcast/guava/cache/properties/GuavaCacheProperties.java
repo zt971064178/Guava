@@ -19,8 +19,10 @@ public class GuavaCacheProperties {
 	private String expireTimeType ;
 	@Value("${guava.cache.expireTime}")
 	private long expireTime ;
-	@Value("${guava.cache.softValues}")
-	private boolean softValues ;
+	@Value("${guava.cache.autoInvalidate}")
+	private boolean autoInvalidate ;
+	@Value("${guava.cache.validateType}")
+	private String validateType ;
 	@Value("${guava.cache.maximumSize}")
 	private long maximumSize ;
 	@Value("${guava.cache.ticker}")
@@ -86,14 +88,6 @@ public class GuavaCacheProperties {
 		this.expireTime = expireTime;
 	}
 
-	public boolean isSoftValues() {
-		return softValues;
-	}
-
-	public void setSoftValues(boolean softValues) {
-		this.softValues = softValues;
-	}
-
 	public long getMaximumSize() {
 		return maximumSize;
 	}
@@ -124,5 +118,21 @@ public class GuavaCacheProperties {
 
 	public void setStats(boolean stats) {
 		this.stats = stats;
+	}
+
+	public boolean isAutoInvalidate() {
+		return autoInvalidate;
+	}
+
+	public void setAutoInvalidate(boolean autoInvalidate) {
+		this.autoInvalidate = autoInvalidate;
+	}
+
+	public String getValidateType() {
+		return validateType;
+	}
+
+	public void setValidateType(String validateType) {
+		this.validateType = validateType;
 	}
 }
