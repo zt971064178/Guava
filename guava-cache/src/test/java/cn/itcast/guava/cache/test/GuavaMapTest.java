@@ -5,13 +5,13 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import cn.itcast.guava.cache.manager.MapObjectManager;
-import cn.itcast.guava.cache.manager.MapStringManager;
+import cn.itcast.guava.cache.manager.MapObjectCacheManager;
+import cn.itcast.guava.cache.manager.MapStringCacheManager;
 
 public class GuavaMapTest {
 	@Test
 	public void testMapString() {
-		MapStringManager mapStringManager = MapStringManager.getInstance() ;
+		MapStringCacheManager mapStringManager = MapStringCacheManager.getInstance() ;
 		mapStringManager.putCache("name", "zhangtian");
 		
 		String name = mapStringManager.get("name") ;
@@ -34,7 +34,7 @@ public class GuavaMapTest {
 	
 	@Test
 	public void testMapObject() {
-		MapObjectManager mapObjectManager = MapObjectManager.getInstance() ;
+		MapObjectCacheManager mapObjectManager = MapObjectCacheManager.getInstance() ;
 		mapObjectManager.putCache("hello", "hello");
 		
 		Object name = mapObjectManager.get("hello") ;

@@ -2,32 +2,34 @@ package cn.itcast.guava.cache.manager;
 
 import cn.itcast.guava.cache.GuavaAbstractLoadingCache;
 import cn.itcast.guava.cache.ILocalCache;
+
 /**
  * @author zhangtian
- * MapObject类型数据存储
+ * MapString类型数据存储
  */
-public class MapObjectManager extends GuavaAbstractLoadingCache<String, Object> implements ILocalCache<String, Object>  {
-	private MapObjectManager() {
+public class MapStringCacheManager extends GuavaAbstractLoadingCache<String, String> implements ILocalCache<String, String> {
+	
+	private MapStringCacheManager() {
 		
 	}
 	
 	// 静态内部类创建单例  线程安全
 	private static class SingletonHolder {
-		private final static MapObjectManager INSTANCE = new MapObjectManager();
+		private final static MapStringCacheManager INSTANCE = new MapStringCacheManager();
 	}
 	
-	public static final MapObjectManager getInstance() {
-		return MapObjectManager.SingletonHolder.INSTANCE ;
+	public static final MapStringCacheManager getInstance() {
+		return MapStringCacheManager.SingletonHolder.INSTANCE ;
 	}
 
 	@Override
-	protected Object fetchData(String key) {
+	protected String fetchData(String key) {
 		System.out.println("缓存数据不存在，模拟数据库获取空值");
 		return "" ;
 	}
 
 	@Override
-	public Object get(String key) {
+	public String get(String key) {
 		try {  
 			return getValue(key);  
         } catch (Exception e) { 
