@@ -2,7 +2,7 @@ package cn.itcast.guava.cache.test;
 
 import org.junit.Test;
 
-import cn.itcast.guava.cache.service.BaseUserService;
+import cn.itcast.guava.cache.example.service.BaseUserService;
 
 /**
  * ClassName: GuavaCacheTest  

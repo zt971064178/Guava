@@ -1,7 +1,7 @@
-package cn.itcast.guava.cache.service;
+package cn.itcast.guava.cache.example.service;
 
-import cn.itcast.guava.cache.domain.BaseArea;
-import cn.itcast.guava.cache.manager.LCAreaCacheManager;
+import cn.itcast.guava.cache.example.domain.BaseArea;
+import cn.itcast.guava.cache.example.manager.LCAreaCacheManager;
 
 /**
  * ClassName: BaseUserService  

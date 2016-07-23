@@ -1,8 +1,8 @@
-package cn.itcast.guava.cache.manager;
+package cn.itcast.guava.cache.example.manager;
 
 import cn.itcast.guava.cache.GuavaAbstractLoadingCache;
 import cn.itcast.guava.cache.ILocalCache;
-import cn.itcast.guava.cache.domain.BaseArea;
+import cn.itcast.guava.cache.example.domain.BaseArea;
 
 /**
  * ClassName: LCAreaCacheManager  

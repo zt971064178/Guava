@@ -1,4 +1,4 @@
-package cn.itcast.guava.cache.domain;
+package cn.itcast.guava.cache.example.domain;
 
 import java.io.Serializable;
 
