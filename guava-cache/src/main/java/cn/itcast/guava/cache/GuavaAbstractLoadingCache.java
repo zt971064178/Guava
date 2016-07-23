@@ -180,22 +180,6 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
 				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.MINUTES) ;
 				break;
 			case CommonConstant.TIMETYPE_HOUR:
-				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.HOURS) ;
-				break;
-			default:
-				break;
-			}
-    	}
-    	
-    	if(guavaCacheProperties.isExpireAfterWrite()) {
-    		switch (guavaCacheProperties.getExpireTimeType().toLowerCase()) {
-			case CommonConstant.TIMETYPE_SECOND:
-				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.SECONDS) ;
-				break;
-			case CommonConstant.TIMETYPE_MINUTE:
-				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.MINUTES) ;
-				break;
-			case CommonConstant.TIMETYPE_HOUR:
 				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.HOURS) ;
 				break;
 			default:
@@ -203,20 +187,47 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
 			}
     	}
     	
+    	if(guavaCacheProperties.isExpireAfterWrite()) {
+    		// -1表示永不失效
+    		if(guavaCacheProperties.getExpireTime() != -1) {
+    			switch (guavaCacheProperties.getExpireTimeType().toLowerCase()) {
+    			case CommonConstant.TIMETYPE_SECOND:
+    				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.SECONDS) ;
+    				break;
+    			case CommonConstant.TIMETYPE_MINUTE:
+    				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.MINUTES) ;
+    				break;
+    			case CommonConstant.TIMETYPE_HOUR:
+    				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.HOURS) ;
+    				break;
+    			case CommonConstant.TIMETYPE_DAY:
+    				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.DAYS) ;
+    				break;
+    			default:
+    				break;
+    			}
+    		} 
+    	}
+    	
     	if(guavaCacheProperties.isExpireAfterAccess()) {
-    		switch (guavaCacheProperties.getExpireTimeType().toLowerCase()) {
-			case CommonConstant.TIMETYPE_SECOND:
-				cacheBuilder.expireAfterAccess(guavaCacheProperties.getRefreshTime(), TimeUnit.SECONDS) ;
-				break;
-			case CommonConstant.TIMETYPE_MINUTE:
-				cacheBuilder.expireAfterAccess(guavaCacheProperties.getRefreshTime(), TimeUnit.MINUTES) ;
-				break;
-			case CommonConstant.TIMETYPE_HOUR:
-				cacheBuilder.expireAfterAccess(guavaCacheProperties.getRefreshTime(), TimeUnit.HOURS) ;
-				break;
-			default:
-				break;
-			}
+    		if(guavaCacheProperties.getExpireTime() != -1) {
+    			switch (guavaCacheProperties.getExpireTimeType().toLowerCase()) {
+    			case CommonConstant.TIMETYPE_SECOND:
+    				cacheBuilder.expireAfterAccess(guavaCacheProperties.getExpireTime(), TimeUnit.SECONDS) ;
+    				break;
+    			case CommonConstant.TIMETYPE_MINUTE:
+    				cacheBuilder.expireAfterAccess(guavaCacheProperties.getExpireTime(), TimeUnit.MINUTES) ;
+    				break;
+    			case CommonConstant.TIMETYPE_HOUR:
+    				cacheBuilder.expireAfterAccess(guavaCacheProperties.getExpireTime(), TimeUnit.HOURS) ;
+    				break;
+    			case CommonConstant.TIMETYPE_DAY:
+    				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.DAYS) ;
+    				break;
+    			default:
+    				break;
+    			}
+    		}
     	}
     	
     	if(guavaCacheProperties.isSoftValues()) {

@@ -4,4 +4,5 @@ public interface CommonConstant {
 	public static final String TIMETYPE_SECOND = "second" ; 
 	public static final String TIMETYPE_MINUTE = "minute" ;
 	public static final String TIMETYPE_HOUR = "hour" ;
+	public static final String TIMETYPE_DAY = "day" ;
 }
