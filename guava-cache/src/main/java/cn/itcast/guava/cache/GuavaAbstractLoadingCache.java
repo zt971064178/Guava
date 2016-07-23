@@ -78,7 +78,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @param value
      */
     public void putCache(K key , V value) {
-    	this.cache.put(key, value);
+    	this.getCache().put(key, value);
     }
     
     /**
@@ -88,7 +88,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @param map
      */
     public void batchPutCache(Map<K, V> map) {
-    	this.cache.putAll(map);
+    	this.getCache().putAll(map);
     }
     
     /**
@@ -98,7 +98,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @param key
      */
     public void invalidate(K key) {
-    	this.cache.invalidate(key);	
+    	this.getCache().invalidate(key);	
     }
     
     /**
@@ -107,7 +107,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @author zhangtian
      */
     public void invalidateAll() {
-    	this.cache.invalidateAll();
+    	this.getCache().invalidateAll();
     }
     
     /**
@@ -117,7 +117,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @param keys
      */
     public void invalidateAll(Iterable<K> keys) {
-    	this.cache.invalidateAll(keys);
+    	this.getCache().invalidateAll(keys);
     }
     
     /**
@@ -127,7 +127,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @param key
      */
     public void refresh(K key) {
-    	this.cache.refresh(key);
+    	this.getCache().refresh(key);
     }
     
     /** 
