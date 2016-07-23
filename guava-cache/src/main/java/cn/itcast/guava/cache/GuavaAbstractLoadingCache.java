@@ -5,10 +5,15 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Ticker;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
+
+import cn.itcast.guava.cache.constant.CommonConstant;
+import cn.itcast.guava.cache.loader.PropertyLoader;
+import cn.itcast.guava.cache.properties.GuavaCacheProperties;
 
 /**
  * ClassName: GuavaAbstractLoadingCache  
@@ -21,17 +26,16 @@ import com.google.common.collect.ImmutableMap;
  * @version @param <V>
  */
 public abstract class GuavaAbstractLoadingCache<K, V> {
-	//用于初始化cache的参数及其缺省值 
-	// 最大缓存条数，子类在构造方法中调用setMaximumSize(int size)来更改  
-	private int maximumSize = 1000 ;
-	// 数据存在时长，子类在构造方法中调用setExpireAfterWriteDuration(int duration)来更改  
-	private int expireAfterWriteDuration = 60;      
-	// 时间单位（分钟）  
-	private TimeUnit timeUnit = TimeUnit.MINUTES;   
 	private Date resetTime;     // Cache初始化或被重置的时间  
     private long highestSize=0; // 历史最高记录数  
     private Date highestTime;   // 创造历史记录的时间  
     private LoadingCache<K, V> cache ;  
+    
+    public static GuavaCacheProperties guavaCacheProperties = null ;
+    
+    static {
+    	guavaCacheProperties = (GuavaCacheProperties) PropertyLoader.loadProperty(GuavaCacheProperties.class) ;
+    }
 	
     /**
      *  getCache:(通过调用getCache().get(key)来获取数据 ). 
@@ -43,9 +47,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     	if(cache == null){  //使用双重校验锁保证只有一个cache实例  
             synchronized (this) {  
                 if(cache == null){
-                	cache = CacheBuilder.newBuilder().maximumSize(maximumSize)      //缓存数据的最大条目，也可以使用.maximumWeight(weight)代替  
-                            .expireAfterWrite(expireAfterWriteDuration, timeUnit)   //数据被创建多久后被移除  
-                            .recordStats()                                          //启用统计  
+                	cache = getCacheBuilder()
                             .build(new CacheLoader<K, V>() {  
                                 @Override  
                                 public V load(K key) throws Exception { 
@@ -161,22 +163,79 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
         }  
         return result;  
     }
-
-	public int getMaximumSize() {
-		return maximumSize;
-	}
-
-	public void setMaximumSize(int maximumSize) {
-		this.maximumSize = maximumSize;
-	}
-
-	public int getExpireAfterWriteDuration() {
-		return expireAfterWriteDuration;
-	}
-
-	public void setExpireAfterWriteDuration(int expireAfterWriteDuration) {
-		this.expireAfterWriteDuration = expireAfterWriteDuration;
-	}
+    
+    /**
+     * 构造CacheBuilder
+     * @param cacheBuilder
+     * @return
+     */
+    public CacheBuilder<Object, Object> getCacheBuilder() {
+    	CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder() ;
+    	if(guavaCacheProperties.isRefreshAfterWrite()) {
+    		switch (guavaCacheProperties.getRefreshTimeType().toLowerCase()) {
+			case CommonConstant.TIMETYPE_SECOND:
+				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.SECONDS) ;
+				break;
+			case CommonConstant.TIMETYPE_MINUTE:
+				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.MINUTES) ;
+				break;
+			case CommonConstant.TIMETYPE_HOUR:
+				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.HOURS) ;
+				break;
+			default:
+				break;
+			}
+    	}
+    	
+    	if(guavaCacheProperties.isExpireAfterWrite()) {
+    		switch (guavaCacheProperties.getExpireTimeType().toLowerCase()) {
+			case CommonConstant.TIMETYPE_SECOND:
+				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.SECONDS) ;
+				break;
+			case CommonConstant.TIMETYPE_MINUTE:
+				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.MINUTES) ;
+				break;
+			case CommonConstant.TIMETYPE_HOUR:
+				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.HOURS) ;
+				break;
+			default:
+				break;
+			}
+    	}
+    	
+    	if(guavaCacheProperties.isExpireAfterAccess()) {
+    		switch (guavaCacheProperties.getExpireTimeType().toLowerCase()) {
+			case CommonConstant.TIMETYPE_SECOND:
+				cacheBuilder.expireAfterAccess(guavaCacheProperties.getRefreshTime(), TimeUnit.SECONDS) ;
+				break;
+			case CommonConstant.TIMETYPE_MINUTE:
+				cacheBuilder.expireAfterAccess(guavaCacheProperties.getRefreshTime(), TimeUnit.MINUTES) ;
+				break;
+			case CommonConstant.TIMETYPE_HOUR:
+				cacheBuilder.expireAfterAccess(guavaCacheProperties.getRefreshTime(), TimeUnit.HOURS) ;
+				break;
+			default:
+				break;
+			}
+    	}
+    	
+    	if(guavaCacheProperties.isSoftValues()) {
+    		cacheBuilder.softValues() ;
+    	}
+    	
+    	if(guavaCacheProperties.isTicker()) {
+    		cacheBuilder.ticker(Ticker.systemTicker()) ;
+    	}
+    	
+    	cacheBuilder.maximumSize(guavaCacheProperties.getMaximumSize()) ;
+    	cacheBuilder.concurrencyLevel(guavaCacheProperties.getConcurrencyLevel()) ;
+    	
+    	if(guavaCacheProperties.isStats()) {
+    		cacheBuilder.recordStats() ;
+    	}
+    	
+    	return cacheBuilder ;
+    }
 
 	public Date getResetTime() {
 		return resetTime;
@@ -201,5 +260,4 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
 	public void setHighestTime(Date highestTime) {
 		this.highestTime = highestTime;
 	}
-    
 }

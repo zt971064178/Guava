@@ -13,7 +13,7 @@ import cn.itcast.guava.cache.domain.BaseArea;
 public class LCAreaCacheManager extends GuavaAbstractLoadingCache<Integer, BaseArea> implements ILocalCache<Integer, BaseArea> {
 
 	public LCAreaCacheManager() {
-		setMaximumSize(3000); //最大缓存条数  
+		
 	}
 	
 	@Override
