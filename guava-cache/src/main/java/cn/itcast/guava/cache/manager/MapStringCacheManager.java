@@ -1,5 +1,7 @@
 package cn.itcast.guava.cache.manager;
 
+import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
+
 import cn.itcast.guava.cache.GuavaAbstractLoadingCache;
 import cn.itcast.guava.cache.ILocalCache;
 
@@ -25,16 +27,18 @@ public class MapStringCacheManager extends GuavaAbstractLoadingCache<String, Str
 	@Override
 	protected String fetchData(String key) {
 		System.out.println("缓存数据不存在，模拟数据库获取空值");
-		return "" ;
+		return null ;
 	}
 
 	@Override
 	public String get(String key) {
 		try {  
 			return getValue(key);  
-        } catch (Exception e) { 
+        } catch (InvalidCacheLoadException e) { 
+            return null;  
+        } catch(Exception e) {
         	e.printStackTrace();
             return null;  
-        } 
+        }
 	}
 }

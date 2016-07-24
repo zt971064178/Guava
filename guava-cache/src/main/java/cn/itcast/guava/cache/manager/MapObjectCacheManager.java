@@ -1,5 +1,7 @@
 package cn.itcast.guava.cache.manager;
 
+import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
+
 import cn.itcast.guava.cache.GuavaAbstractLoadingCache;
 import cn.itcast.guava.cache.ILocalCache;
 /**
@@ -30,9 +32,11 @@ public class MapObjectCacheManager extends GuavaAbstractLoadingCache<String, Obj
 	public Object get(String key) {
 		try {  
 			return getValue(key);  
-        } catch (Exception e) { 
+        } catch (InvalidCacheLoadException e) { 
+            return null;  
+        } catch(Exception e) {
         	e.printStackTrace();
             return null;  
-        } 
+        }
 	}
 }

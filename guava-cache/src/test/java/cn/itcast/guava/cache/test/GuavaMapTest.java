@@ -12,7 +12,7 @@ import cn.itcast.guava.cache.manager.MapStringCacheManager;
 
 public class GuavaMapTest {
 	@Test
-	public void testMapString() {
+	public void testMapString() throws ExecutionException {
 		MapStringCacheManager mapStringManager = MapStringCacheManager.getInstance() ;
 		mapStringManager.putCache("name", "zhangtian");
 		
@@ -33,14 +33,16 @@ public class GuavaMapTest {
 		
 		System.out.println(mapStringManager.get("b"));*/
 		
+		/*// 测试从缓存中获取数据
 		System.out.println("============== 缓存 =============");
-		try {
-			mapStringManager.getCache().get("name", new Callable<String>() {
-			}) ;
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String getName = mapStringManager.getCache().get("name", new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				System.out.println("从数据库中获取数据。。。。。");
+				return "莫言";
+			}
+		}) ;
+		System.out.println(getName);*/
 	}
 	
 	@Test
