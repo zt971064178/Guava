@@ -25,7 +25,7 @@ public class MapObjectCacheManager extends GuavaAbstractLoadingCache<String, Obj
 	@Override
 	protected Object fetchData(String key) {
 		System.out.println("缓存数据不存在，模拟数据库获取空值");
-		return "" ;
+		return null ;
 	}
 
 	@Override
