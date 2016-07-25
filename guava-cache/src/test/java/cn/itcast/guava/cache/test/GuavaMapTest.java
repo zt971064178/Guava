@@ -33,7 +33,7 @@ public class GuavaMapTest {
 		
 		System.out.println(mapStringManager.get("b"));*/
 		
-		/*// 测试从缓存中获取数据
+		// 测试从缓存中获取数据
 		System.out.println("============== 缓存 =============");
 		String getName = mapStringManager.getCache().get("name", new Callable<String>() {
 			@Override
@@ -42,7 +42,8 @@ public class GuavaMapTest {
 				return "莫言";
 			}
 		}) ;
-		System.out.println(getName);*/
+		System.out.println(getName);
+		System.out.println(mapStringManager.get("name"));
 	}
 	
 	@Test
