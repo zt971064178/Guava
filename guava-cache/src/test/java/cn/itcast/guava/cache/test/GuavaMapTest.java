@@ -20,9 +20,10 @@ public class GuavaMapTest {
 		System.out.println("Validate:"+name);
 		
 		// mapStringManager.refresh("name");
-		mapStringManager.invalidate("name");
+		//mapStringManager.invalidate("name");
 		name = mapStringManager.get("name") ;
-		System.out.println("Invalidate:"+name);
+		String present = mapStringManager.getCache().getIfPresent("name") ;
+		System.out.println("Invalidate:"+name+",present:"+present);
 		
 		/*Map<String, String> map = new HashMap<String, String>() ;
 		map.put("a", "aa") ;

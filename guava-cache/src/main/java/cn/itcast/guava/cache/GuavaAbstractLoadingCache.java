@@ -56,7 +56,6 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
                             });  
                     this.resetTime = new Date();  
                     this.highestTime = new Date();  
-                    System.out.println("本地化缓存初始化成功......");
                 }
             }
     	}
@@ -142,8 +141,6 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
             highestSize = getCache().size();  
             highestTime = new Date();  
         }  
-  
-        System.out.println("从缓存中获取数据Key:"+result.toString());
         return result;  
     }
     
