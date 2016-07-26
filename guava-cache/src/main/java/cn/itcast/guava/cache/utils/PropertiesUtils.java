@@ -13,7 +13,7 @@ public class PropertiesUtils {
 		Properties prop = new Properties();
 		InputStream stream = null;
 		try {
-			stream = PropertiesUtils.class.getResourceAsStream("/"+propertiesName) ;
+			stream = PropertiesUtils.class.getClassLoader().getResourceAsStream("/"+propertiesName) ;
 			if(stream == null) {
 				stream = GuavaCacheProperties.class.getResourceAsStream(propertiesName) ;
 			}
