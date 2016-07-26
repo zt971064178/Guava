@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 
+import com.google.common.base.Optional;
+
 import cn.itcast.guava.cache.manager.MapObjectCacheManager;
 import cn.itcast.guava.cache.manager.MapStringCacheManager;
 
@@ -20,7 +22,7 @@ public class GuavaMapTest {
 		System.out.println("Validate:"+name);
 		
 		// mapStringManager.refresh("name");
-		//mapStringManager.invalidate("name");
+		mapStringManager.invalidate("name");
 		name = mapStringManager.get("name") ;
 		String present = mapStringManager.getCache().getIfPresent("name") ;
 		System.out.println("Invalidate:"+name+",present:"+present);
@@ -63,5 +65,10 @@ public class GuavaMapTest {
 		mapObjectManager.batchPutCache(map);
 		
 		System.out.println(mapObjectManager.get("d"));
+	}
+	
+	@Test
+	public void SimpleTest() {
+		System.out.println(Optional.fromNullable(null));
 	}
 }
