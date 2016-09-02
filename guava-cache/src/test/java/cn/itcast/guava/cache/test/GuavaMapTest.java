@@ -7,8 +7,6 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 
-import com.google.common.base.Optional;
-
 import cn.itcast.guava.cache.manager.MapObjectCacheManager;
 import cn.itcast.guava.cache.manager.MapStringCacheManager;
 
@@ -18,14 +16,13 @@ public class GuavaMapTest {
 		MapStringCacheManager mapStringManager = MapStringCacheManager.getInstance() ;
 		mapStringManager.putCache("name", "zhangtian");
 		
-		String name = mapStringManager.get("name") ;
+		String name = mapStringManager.getValue("name") ;
 		System.out.println("Validate:"+name);
 		
 		// mapStringManager.refresh("name");
 		mapStringManager.invalidate("name");
-		name = mapStringManager.get("name") ;
-		String present = mapStringManager.getCache().getIfPresent("name") ;
-		System.out.println("Invalidate:"+name+",present:"+present);
+		name = mapStringManager.getValue("name") ;
+		System.out.println("Invalidate:"+name);
 		
 		/*Map<String, String> map = new HashMap<String, String>() ;
 		map.put("a", "aa") ;
@@ -46,7 +43,7 @@ public class GuavaMapTest {
 			}
 		}) ;
 		System.out.println(getName);
-		System.out.println(mapStringManager.get("name"));
+		System.out.println(mapStringManager.getValue("name"));
 	}
 	
 	@Test
@@ -54,7 +51,7 @@ public class GuavaMapTest {
 		MapObjectCacheManager mapObjectManager = MapObjectCacheManager.getInstance() ;
 		mapObjectManager.putCache("hello", "hello");
 		
-		Object name = mapObjectManager.get("hello") ;
+		Object name = mapObjectManager.getValue("hello") ;
 		System.out.println(name);
 		
 		Map<String, Object> map = new HashMap<String, Object>() ;
@@ -64,11 +61,6 @@ public class GuavaMapTest {
 		map.put("d", "dd") ;
 		mapObjectManager.batchPutCache(map);
 		
-		System.out.println(mapObjectManager.get("d"));
-	}
-	
-	@Test
-	public void SimpleTest() {
-		System.out.println(Optional.fromNullable(null));
+		System.out.println(mapObjectManager.getValue("d"));
 	}
 }

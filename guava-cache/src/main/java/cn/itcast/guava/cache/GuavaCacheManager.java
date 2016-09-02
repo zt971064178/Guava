@@ -6,9 +6,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Ticker;
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.ImmutableMap;
@@ -18,20 +17,18 @@ import cn.itcast.guava.cache.loader.PropertyLoader;
 import cn.itcast.guava.cache.properties.GuavaCacheProperties;
 
 /**
- * ClassName: GuavaAbstractLoadingCache  
- * 抽象Guava缓存类、缓存模板。
- * 子类需要实现fetchData(key)，从数据库或其他数据源（如Redis）中获取数据。
- * 子类调用getValue(key)方法，从缓存中获取数据，并处理不同的异常，比如value为null时的InvalidCacheLoadException异常。 
- * (缓存辅助类,包括：Cache创建、从数据源获取数据、定义过时策略、等)
+ * ClassName: GuavaCacheManager  
+ * (缓存管理类)
  * @author zhangtian  
  * @version @param <K>
  * @version @param <V>
  */
-public abstract class GuavaAbstractLoadingCache<K, V> {
+public abstract class GuavaCacheManager<K, V> {
+
 	private Date resetTime;     // Cache初始化或被重置的时间  
     private long highestSize=0; // 历史最高记录数  
     private Date highestTime;   // 创造历史记录的时间  
-    private LoadingCache<K, V> cache ;  
+    private Cache<K, V> cache ;  
     
     public static GuavaCacheProperties guavaCacheProperties = null ;
     
@@ -45,7 +42,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @author zhangtian  
      *  @return
      */
-    public LoadingCache<K, V> getCache() {
+    public Cache<K, V> getCache() {
     	if(cache == null){  //使用双重校验锁保证只有一个cache实例  
             synchronized (this) {  
                 if(cache == null){
@@ -56,12 +53,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
 									System.out.println(notification.getKey()+"被移除了...");
 								}
 							})
-                            .build(new CacheLoader<K, V>() {  
-                                @Override  
-                                public V load(K key) throws Exception { 
-                                    return fetchData(key);  
-                                }  
-                            });  
+                            .build();  
                     this.resetTime = new Date();  
                     this.highestTime = new Date();  
                 }
@@ -69,13 +61,6 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     	}
     	return cache; 
     }
-    
-    /** 
-     * 根据key从数据库或其他数据源中获取一个value，并被自动保存到缓存中。 
-     * @param key 
-     * @return value,连同key一起被加载到缓存中的。  
-     */  
-    protected abstract V fetchData(K key);  
     
     /**
      *  putCache:(数据加入缓存). 
@@ -128,13 +113,13 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     }
     
     /**
-     *  refresh:(刷新Key对应的缓存). 
+     *  refresh:(清空缓存). 
      *  @return_type:void
      *  @author zhangtian  
      *  @param key
      */
-    public void refresh(K key) {
-    	this.getCache().refresh(key);
+    public void cleanUp() {
+    	this.getCache().cleanUp();
     }
     
     /** 
@@ -143,13 +128,13 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      * @return Value 
      * @throws ExecutionException  
      */  
-    protected V getValue(K key) throws ExecutionException { 
-        V result = getCache().get(key);  
+    public V getValue(K key) { 
+        V result = getCache().getIfPresent(key);  
 		if(getCache().size() > highestSize){  
 		    highestSize = getCache().size();  
 		    highestTime = new Date();  
 		}
-    return result;  
+		return result;  
     }
     
     /**
@@ -160,8 +145,8 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      *  @return
      *  @throws ExecutionException
      */
-    protected ImmutableMap<K, V> getAllValue(Iterable<K> keys) throws ExecutionException {  
-    	ImmutableMap<K, V> result = getCache().getAll(keys) ;
+    public ImmutableMap<K, V> getAllValue(Iterable<K> keys) throws ExecutionException {  
+    	ImmutableMap<K, V> result = getCache().getAllPresent(keys) ;
         if(getCache().size() > highestSize){  
             highestSize = getCache().size();  
             highestTime = new Date();  
@@ -176,21 +161,6 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
      */
     private CacheBuilder<Object, Object> getCacheBuilder() {
     	CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder() ;
-    	if(guavaCacheProperties.isRefreshAfterWrite()) {
-    		switch (guavaCacheProperties.getRefreshTimeType().toLowerCase()) {
-			case CommonConstant.TIMETYPE_SECOND:
-				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.SECONDS) ;
-				break;
-			case CommonConstant.TIMETYPE_MINUTE:
-				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getRefreshTime(), TimeUnit.MINUTES) ;
-				break;
-			case CommonConstant.TIMETYPE_HOUR:
-				cacheBuilder.refreshAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.HOURS) ;
-				break;
-			default:
-				break;
-			}
-    	}
     	
     	if(guavaCacheProperties.isExpireAfterWrite()) {
     		// -1表示永不失效

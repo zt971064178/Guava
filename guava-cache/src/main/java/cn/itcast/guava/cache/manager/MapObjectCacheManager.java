@@ -1,14 +1,11 @@
 package cn.itcast.guava.cache.manager;
 
-import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
-
-import cn.itcast.guava.cache.GuavaAbstractLoadingCache;
-import cn.itcast.guava.cache.ILocalCache;
+import cn.itcast.guava.cache.GuavaCacheManager;
 /**
  * @author zhangtian
  * MapObject类型数据存储
  */
-public class MapObjectCacheManager extends GuavaAbstractLoadingCache<String, Object> implements ILocalCache<String, Object>  {
+public class MapObjectCacheManager extends GuavaCacheManager<String, Object> {
 	private MapObjectCacheManager() {
 		
 	}
@@ -20,23 +17,5 @@ public class MapObjectCacheManager extends GuavaAbstractLoadingCache<String, Obj
 	
 	public static final MapObjectCacheManager getInstance() {
 		return MapObjectCacheManager.SingletonHolder.INSTANCE ;
-	}
-
-	@Override
-	protected Object fetchData(String key) {
-		System.out.println("缓存数据不存在，模拟数据库获取空值");
-		return null ;
-	}
-
-	@Override
-	public Object get(String key) {
-		try {  
-			return getValue(key);  
-        } catch (InvalidCacheLoadException e) { 
-            return null;  
-        } catch(Exception e) {
-        	e.printStackTrace();
-            return null;  
-        }
 	}
 }

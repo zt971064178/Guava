@@ -1,15 +1,12 @@
 package cn.itcast.guava.cache.manager;
 
-import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
-
-import cn.itcast.guava.cache.GuavaAbstractLoadingCache;
-import cn.itcast.guava.cache.ILocalCache;
+import cn.itcast.guava.cache.GuavaCacheManager;
 
 /**
  * @author zhangtian
  * MapString类型数据存储
  */
-public class MapStringCacheManager extends GuavaAbstractLoadingCache<String, String> implements ILocalCache<String, String> {
+public class MapStringCacheManager extends GuavaCacheManager<String, String>{
 	
 	private MapStringCacheManager() {
 		
@@ -22,22 +19,5 @@ public class MapStringCacheManager extends GuavaAbstractLoadingCache<String, Str
 	
 	public static final MapStringCacheManager getInstance() {
 		return MapStringCacheManager.SingletonHolder.INSTANCE ;
-	}
-
-	@Override
-	protected String fetchData(String key) {
-		return null ;
-	}
-
-	@Override
-	public String get(String key) {
-		try {  
-			return getValue(key);  
-        } catch (InvalidCacheLoadException e) { 
-            return null;  
-        } catch(Exception e) {
-        	e.printStackTrace();
-            return null;  
-        }
 	}
 }
