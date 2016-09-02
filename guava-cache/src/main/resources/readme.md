@@ -1,6 +1,6 @@
-guava.cache.refreshAfterWrite=true
+guava.cache.refreshAfterWrite=false
 guava.cache.refreshTimeType=second
-#设置写缓存n秒钟之后刷新缓存
+#设置写缓存n秒钟之后刷新缓存，策略模式中不能设置该参数太小，否则不断取值刷新缓存，导致数据无法命中
 guava.cache.refreshTime=3
 guava.cache.expireAfterWrite=false
 guava.cache.expireAfterAccess=true
