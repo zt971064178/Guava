@@ -31,6 +31,16 @@ public class GuavaCacheProperties {
 	private int concurrencyLevel ;
 	@Value("${guava.cache.stats}")
 	private boolean stats ;
+	@Value("${guava.cache.initialCapacity}")
+	private int initialCapacity ;
+
+	public int getInitialCapacity() {
+		return initialCapacity;
+	}
+
+	public void setInitialCapacity(int initialCapacity) {
+		this.initialCapacity = initialCapacity;
+	}
 
 	public boolean isRefreshAfterWrite() {
 		return refreshAfterWrite;

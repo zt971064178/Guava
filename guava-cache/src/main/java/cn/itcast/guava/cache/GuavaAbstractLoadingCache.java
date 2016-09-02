@@ -255,6 +255,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     		cacheBuilder.ticker(Ticker.systemTicker()) ;
     	}
     	
+    	cacheBuilder.initialCapacity(guavaCacheProperties.getInitialCapacity()) ;
     	cacheBuilder.maximumSize(guavaCacheProperties.getMaximumSize()) ;
     	cacheBuilder.concurrencyLevel(guavaCacheProperties.getConcurrencyLevel()) ;
     	
