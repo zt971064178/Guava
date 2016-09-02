@@ -227,7 +227,7 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     				cacheBuilder.expireAfterAccess(guavaCacheProperties.getExpireTime(), TimeUnit.HOURS) ;
     				break;
     			case CommonConstant.TIMETYPE_DAY:
-    				cacheBuilder.expireAfterWrite(guavaCacheProperties.getExpireTime(), TimeUnit.DAYS) ;
+    				cacheBuilder.expireAfterAccess(guavaCacheProperties.getExpireTime(), TimeUnit.DAYS) ;
     				break;
     			default:
     				break;
