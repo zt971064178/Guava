@@ -1,21 +1,20 @@
 package cn.itcast.guava.cache.test;
 
+import cn.itcast.guava.cache.manager.MapObjectCacheManager;
+import cn.itcast.guava.cache.manager.MapStringCacheManager;
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-
-import org.junit.Test;
-
-import cn.itcast.guava.cache.manager.MapObjectCacheManager;
-import cn.itcast.guava.cache.manager.MapStringCacheManager;
 
 public class GuavaMapTest {
 	@Test
 	public void testMapString() throws ExecutionException {
 		MapStringCacheManager mapStringManager = MapStringCacheManager.getInstance() ;
 		mapStringManager.putCache("name", "zhangtian");
-		
+
 		String name = mapStringManager.getValue("name") ;
 		System.out.println("Validate:"+name);
 		

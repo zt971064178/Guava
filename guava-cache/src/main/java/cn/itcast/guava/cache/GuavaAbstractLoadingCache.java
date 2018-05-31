@@ -1,21 +1,16 @@
 package cn.itcast.guava.cache;
 
+import cn.itcast.guava.cache.constant.CommonConstant;
+import cn.itcast.guava.cache.loader.PropertyLoader;
+import cn.itcast.guava.cache.properties.GuavaCacheProperties;
+import com.google.common.base.Ticker;
+import com.google.common.cache.*;
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Ticker;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
-import com.google.common.collect.ImmutableMap;
-
-import cn.itcast.guava.cache.constant.CommonConstant;
-import cn.itcast.guava.cache.loader.PropertyLoader;
-import cn.itcast.guava.cache.properties.GuavaCacheProperties;
 
 /**
  * ClassName: GuavaAbstractLoadingCache  
@@ -171,7 +166,6 @@ public abstract class GuavaAbstractLoadingCache<K, V> {
     
     /**
      * 构造CacheBuilder
-     * @param cacheBuilder
      * @return
      */
     private CacheBuilder<Object, Object> getCacheBuilder() {
